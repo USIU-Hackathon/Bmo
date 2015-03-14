@@ -25,6 +25,7 @@ import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -52,12 +53,9 @@ public class SenderActivity extends Activity {
 	Button sendFile;
 	final int DO_UPDATE_TEXT = 0;
 	final int DO_THAT = 1;
+	SmsSend send;
+	String phoneNumer = "+254727383066";
 
-	ImageView im;
-	HttpClient httpClient = new DefaultHttpClient();
-	HttpPost httpPost = new HttpPost(file_url);
-	String phoneNumer = "0727383066";
-	SmsSend send = new SmsSend();
 	String messageToSend = "we did not invent the algorithm. the algorithm constantly "
 			+ "finds jesus. the algorithm killed jeeves. the algorithm "
 			+ "is banned in china. the algorithm is from jersey. the algorithm "
@@ -69,8 +67,11 @@ public class SenderActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.webview);
 		serverConnection();
+
+//		send.sendSms(SenderActivity.this, "+254727383066", "blah");
 
 		sendFile = (Button) findViewById(R.id.button1);
 
@@ -90,6 +91,7 @@ public class SenderActivity extends Activity {
 
 	public void serverConnection() {
 
+		// Looper.prepare();
 		myHandler = new Handler() {
 
 			public void handleMessage(Message msg) {
@@ -117,12 +119,13 @@ public class SenderActivity extends Activity {
 							String event = message.getBody("event");
 							String phoneNumber = message.getBody("phoneNumber");
 							String messageToSend = message.getBody();
+							send = new SmsSend();
+							send.sendSms(SenderActivity.this, "+254727383066",
+									messageToSend);
 
 							Log.d("received message", messageToSend + from
 									+ event + phoneNumber);
 
-							send.sendSms(SenderActivity.this, phoneNumber,
-									messageToSend);
 						}
 					};
 
