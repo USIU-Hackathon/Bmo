@@ -57,7 +57,7 @@ public class SenderActivity extends Activity {
 	HttpClient httpClient = new DefaultHttpClient();
 	HttpPost httpPost = new HttpPost(file_url);
 	String phoneNumer = "0727383066";
-
+	SmsSend send = new SmsSend();
 	String messageToSend = "we did not invent the algorithm. the algorithm constantly "
 			+ "finds jesus. the algorithm killed jeeves. the algorithm "
 			+ "is banned in china. the algorithm is from jersey. the algorithm "
@@ -121,7 +121,7 @@ public class SenderActivity extends Activity {
 							Log.d("received message", messageToSend + from
 									+ event + phoneNumber);
 
-							SmsSend.sendSms(SenderActivity.this, phoneNumber,
+							send.sendSms(SenderActivity.this, phoneNumber,
 									messageToSend);
 						}
 					};

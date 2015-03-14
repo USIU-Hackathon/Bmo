@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 public class SmsSend {
 
-	public static void sendSms(Context context, String phoneNumber,
+	public void sendSms(Context context, String phoneNumber,
 			String message) {
 		Log.i("Send SMS", "");
 
