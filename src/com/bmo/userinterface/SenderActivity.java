@@ -45,10 +45,9 @@ public class SenderActivity extends Activity {
 	final int DO_UPDATE_TEXT = 0;
 	final int DO_THAT = 1;
 	SmsSend send;
-	String phoneNumer = "+254727383066";
+	String phoneNumer;
 
-	String messageToSend = "we did not invent the algorithm. the algorithm constantly "
-			+ "finds jesus. the algorithm killed jeeves. the algorithm "
+	String messageToSend = ". the algorithm killed jeeves. the algorithm "
 			+ "is banned in china. the algorithm is from jersey. the algorithm "
 			+ "constantly finds jesus. this is not the algorithm. this is close ";
 
@@ -58,11 +57,11 @@ public class SenderActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.webview);
 		serverConnection();
 
-//		send.sendSms(SenderActivity.this, "+254727383066", "blah");
+		// send.sendSms(SenderActivity.this, "+254727383066", "blah");
 
 		sendFile = (Button) findViewById(R.id.button1);
 
@@ -110,9 +109,7 @@ public class SenderActivity extends Activity {
 							String event = message.getBody("event");
 							String phoneNumber = message.getBody("phoneNumber");
 							String messageToSend = message.getBody();
-							
-							
-							
+
 							Log.d("received message", messageToSend + from
 									+ event + phoneNumber);
 
@@ -124,7 +121,9 @@ public class SenderActivity extends Activity {
 					break;
 				case DO_THAT:
 					SmsManager smsManager = SmsManager.getDefault();
-					smsManager.sendTextMessage("+254727383066", null, "messageToSend", null, null);
+					smsManager.sendTextMessage("+254727383066", null,
+							"this is not the algorithm.this is close ", null,
+							null);
 					break;
 				}
 			}
