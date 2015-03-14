@@ -45,7 +45,7 @@ public class SenderActivity extends Activity {
 	Button sendFile;
 	final int DO_UPDATE_TEXT = 0;
 	final int DO_THAT = 1;
-	Upload upload;
+
 	ImageView im;
 	HttpClient httpClient = new DefaultHttpClient();
 	HttpPost httpPost = new HttpPost(file_url);
@@ -61,10 +61,6 @@ public class SenderActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-
-				ImageAsync async = new ImageAsync(SenderActivity.this, fstrm,
-						httpClient, httpPost);
-				async.execute();
 
 			}
 
@@ -111,7 +107,7 @@ public class SenderActivity extends Activity {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		Bitmap thumb_nail = ThumbnailUtils.extractThumbnail(
 				BitmapFactory.decodeStream(fstrm), 75, 75);
 	}
