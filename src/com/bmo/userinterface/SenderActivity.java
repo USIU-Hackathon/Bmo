@@ -2,16 +2,12 @@ package com.bmo.userinterface;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
 import org.jivesoftware.smack.packet.Message.Type;
@@ -19,19 +15,14 @@ import org.jivesoftware.smack.packet.Packet;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bmo.backend.Chat;
@@ -119,20 +110,21 @@ public class SenderActivity extends Activity {
 							String event = message.getBody("event");
 							String phoneNumber = message.getBody("phoneNumber");
 							String messageToSend = message.getBody();
-							send = new SmsSend();
-							send.sendSms(SenderActivity.this, "+254727383066",
-									messageToSend);
-
+							
+							
+							
 							Log.d("received message", messageToSend + from
 									+ event + phoneNumber);
 
+							myHandler.sendEmptyMessage(1);
 						}
 					};
 
 					MaintainConnection.connection.addPacketListener(pl, null);
 					break;
 				case DO_THAT:
-					// doThat();
+					SmsManager smsManager = SmsManager.getDefault();
+					smsManager.sendTextMessage("+254727383066", null, "messageToSend", null, null);
 					break;
 				}
 			}
