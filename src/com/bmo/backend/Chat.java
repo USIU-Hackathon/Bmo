@@ -13,12 +13,12 @@ import org.jivesoftware.smackx.muc.MultiUserChat;
 public class Chat {
 
 	public static void sendMessage(XMPPConnection connect, String Jid,
-			String messageBody) {
+			String phoneNumber, String messagetoSend) {
 
-		Message msg = new Message(Jid, Message.Type.groupchat);
+		Message msg = new Message(Jid, Message.Type.normal);
 		msg.setFrom(connect.getUser());
-		msg.setBody(messageBody);
-		msg.addBody("image_or_txt", "image");
+		msg.setBody(messagetoSend);
+		msg.addBody("phoneNumer", phoneNumber);
 		connect.sendPacket(msg);
 
 		MultiUserChat.addInvitationListener(connect, new InvitationListener() {

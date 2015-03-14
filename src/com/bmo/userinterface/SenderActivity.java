@@ -12,6 +12,10 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.jivesoftware.smack.PacketListener;
+import org.jivesoftware.smack.filter.MessageTypeFilter;
+import org.jivesoftware.smack.packet.Message.Type;
+import org.jivesoftware.smack.packet.Packet;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,7 +33,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bmo.backend.Chat;
 import com.bmo.backend.InitializeConnection;
+import com.bmo.backend.MaintainConnection;
 import com.bmo.backend.Master;
 import com.sample.pdfwebviewer.R;
 
@@ -49,19 +55,26 @@ public class SenderActivity extends Activity {
 	ImageView im;
 	HttpClient httpClient = new DefaultHttpClient();
 	HttpPost httpPost = new HttpPost(file_url);
+	String phoneNumer;
+	String messageToSend;
+	String jid;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.webview);
 		serverConnection();
-		imageRetrieval();
+
 		sendFile = (Button) findViewById(R.id.button1);
+
 		sendFile.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 
+				// sender 2.2 jake
+				Chat.sendMessage(MaintainConnection.connection, "jake@bmo.com",
+						phoneNumer, messageToSend);
 			}
 
 		});
@@ -76,11 +89,29 @@ public class SenderActivity extends Activity {
 				final int what = msg.what;
 				switch (what) {
 				case DO_UPDATE_TEXT:
+
 					Intent i = new Intent(SenderActivity.this, Master.class);
 					startService(i);
 					Log.i("message received", "App connected to server");
 					Toast.makeText(SenderActivity.this, "connected to server",
 							3000).show();
+
+					MessageTypeFilter typeFilter = new MessageTypeFilter(
+							Type.normal);
+
+					PacketListener pl = new PacketListener() {
+
+						@Override
+						public void processPacket(Packet packet) {
+							// TODO Auto-generated method stub
+							org.jivesoftware.smack.packet.Message message = (org.jivesoftware.smack.packet.Message) packet;
+							String from = message.getFrom();
+							String mes = message.getBody();
+							Log.d("received message", mes + from);
+						}
+					};
+
+					MaintainConnection.connection.addPacketListener(pl, null);
 					break;
 				case DO_THAT:
 					// doThat();
