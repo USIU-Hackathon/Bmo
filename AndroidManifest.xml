@@ -25,7 +25,7 @@
         </activity>
         
         <service
-            android:name="com.writr.backend.Master"
+            android:name="com.bmo.backend.Master"
             android:label="master" >
         </service>
     </application>
