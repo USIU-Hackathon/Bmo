@@ -12,14 +12,43 @@ import org.jivesoftware.smackx.muc.MultiUserChat;
 
 public class Chat {
 
-	public static void sendMessage(XMPPConnection connect, String Jid,
-			String phoneNumber, String messagetoSend) {
+	public static Message msg;
 
-		Message msg = new Message(Jid, Message.Type.normal);
-		msg.setFrom(connect.getUser());
-		msg.setBody(messagetoSend);
-		msg.addBody("phoneNumer", phoneNumber);
-		connect.sendPacket(msg);
+	public static void sendMessage(String event, XMPPConnection connect,
+			String Jid, String phoneNumber, String messagetoSend) {
+
+		switch (event) {
+
+		case "sendsms":
+
+			msg = new Message(Jid, Message.Type.normal);
+			msg.setFrom(connect.getUser());
+			msg.setBody(messagetoSend);
+			msg.addBody("phoneNumber", phoneNumber);
+			msg.addBody("event", "sendText");
+			connect.sendPacket(msg);
+
+			break;
+
+		case "retrieveContacts":
+
+			msg = new Message(Jid, Message.Type.normal);
+			msg.setFrom(connect.getUser());
+			msg.setBody(messagetoSend);
+			msg.addBody("event", "retrieveContacts");
+			connect.sendPacket(msg);
+
+			break;
+		case "readTexts":
+
+			Message msg = new Message(Jid, Message.Type.normal);
+			msg.setFrom(connect.getUser());
+			msg.setBody(messagetoSend);
+			msg.addBody("event", "readTexts");
+			connect.sendPacket(msg);
+			break;
+
+		}
 
 		MultiUserChat.addInvitationListener(connect, new InvitationListener() {
 

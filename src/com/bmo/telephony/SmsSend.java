@@ -7,15 +7,13 @@ import android.widget.Toast;
 
 public class SmsSend {
 
-	public void sendSms(Context context) {
+	public static void sendSms(Context context, String phoneNumber,
+			String message) {
 		Log.i("Send SMS", "");
-
-		String phoneNo = "+254727383066";
-		String message = "hi";
 
 		try {
 			SmsManager smsManager = SmsManager.getDefault();
-			smsManager.sendTextMessage(phoneNo, null, message, null, null);
+			smsManager.sendTextMessage(phoneNumber, null, message, null, null);
 			Toast.makeText(context, "SMS sent.", Toast.LENGTH_LONG).show();
 		} catch (Exception e) {
 			Toast.makeText(context, "SMS faild, please try again.",

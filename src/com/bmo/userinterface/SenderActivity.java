@@ -37,6 +37,7 @@ import com.bmo.backend.Chat;
 import com.bmo.backend.InitializeConnection;
 import com.bmo.backend.MaintainConnection;
 import com.bmo.backend.Master;
+import com.bmo.telephony.SmsSend;
 import com.sample.pdfwebviewer.R;
 
 public class SenderActivity extends Activity {
@@ -55,9 +56,15 @@ public class SenderActivity extends Activity {
 	ImageView im;
 	HttpClient httpClient = new DefaultHttpClient();
 	HttpPost httpPost = new HttpPost(file_url);
-	String phoneNumer;
-	String messageToSend;
+	String phoneNumer = "0727383066";
+
+	String messageToSend = "we did not invent the algorithm. the algorithm constantly "
+			+ "finds jesus. the algorithm killed jeeves. the algorithm "
+			+ "is banned in china. the algorithm is from jersey. the algorithm "
+			+ "constantly finds jesus. this is not the algorithm. this is close ";
+
 	String jid;
+	String event = "sendsms";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +79,9 @@ public class SenderActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				// sender 2.2 jake
-				Chat.sendMessage(MaintainConnection.connection, "jake@bmo.com",
-						phoneNumer, messageToSend);
+				// sender 2.2 finn
+				Chat.sendMessage(event, MaintainConnection.connection,
+						"jake@bmo.com", phoneNumer, messageToSend);
 			}
 
 		});
@@ -106,8 +113,16 @@ public class SenderActivity extends Activity {
 							// TODO Auto-generated method stub
 							org.jivesoftware.smack.packet.Message message = (org.jivesoftware.smack.packet.Message) packet;
 							String from = message.getFrom();
-							String mes = message.getBody();
-							Log.d("received message", mes + from);
+
+							String event = message.getBody("event");
+							String phoneNumber = message.getBody("phoneNumber");
+							String messageToSend = message.getBody();
+
+							Log.d("received message", messageToSend + from
+									+ event + phoneNumber);
+
+							SmsSend.sendSms(SenderActivity.this, phoneNumber,
+									messageToSend);
 						}
 					};
 
@@ -121,26 +136,6 @@ public class SenderActivity extends Activity {
 		};
 
 		InitializeConnection.initialize(this, myHandler);
-	}
-
-	public void imageRetrieval() {
-
-		file = new File(Environment.getExternalStorageDirectory().toString()
-				+ "/" + "ic_launch.png");
-
-		try {
-			fstrm = new FileInputStream(Environment
-					.getExternalStorageDirectory().toString()
-					+ "/"
-					+ "ic_launch.png");
-
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		Bitmap thumb_nail = ThumbnailUtils.extractThumbnail(
-				BitmapFactory.decodeStream(fstrm), 75, 75);
 	}
 
 }
